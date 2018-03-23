@@ -28,8 +28,16 @@ namespace RestCustomerservice
 
         public string GetCustomer(int id)
         {
+
+            if (cList.Find(x => x.GetiD == id) != null)
+            {
            Customer s = cList.Find(x => x.GetiD == id);
-           return s.GetFirstName;
+                return s.GetFirstName;
+            }
+            else
+            {
+                return "not found";
+            }
         }
 
         public void DeleteCustomer(int id)
