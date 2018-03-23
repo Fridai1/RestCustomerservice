@@ -14,10 +14,40 @@ namespace RestCustomerservice
     {
 
         [OperationContract]
-        string GetData(int value);
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "data/")] 
+        string GetData();
 
         [OperationContract]
-        CompositeType GetDataUsingDataContract(CompositeType composite);
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "customers/")]
+        IList<Customer> GetCustomers();
+
+        [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "customer/")]
+        string GetCustomer(int id);
+
+        [OperationContract]
+        [WebInvoke(Method = "DELETE", ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "customerDelete/")]
+        void DeleteCustomer(int id);
+
+        [OperationContract]
+        [WebInvoke(Method = "PUT", ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "customerEDIT/")]
+        void UpdateCustomer(Customer editC, int id);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "customerInsert/")]
+        void InsertCustomer(Customer insertC, int id);
+
+
+
+
+        //[OperationContract]
+        //CompositeType GetDataUsingDataContract(CompositeType composite);
 
         // TODO: Add your service operations here
     }
