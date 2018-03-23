@@ -25,23 +25,23 @@ namespace RestCustomerservice
 
         [OperationContract]
         [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "customer/")]
+            UriTemplate = "customer?id={id}")]
         string GetCustomer(int id);
 
-        [OperationContract]
-        [WebInvoke(Method = "DELETE", ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "customerDelete/")]
-        void DeleteCustomer(int id);
+        //[OperationContract]
+        //[WebInvoke(Method = "DELETE", ResponseFormat = WebMessageFormat.Json,
+        //    UriTemplate = "customerDelete/")]
+        //void DeleteCustomer(int id);
 
-        [OperationContract]
-        [WebInvoke(Method = "PUT", ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "customerEDIT/")]
-        void UpdateCustomer(Customer editC, int id);
+        //[OperationContract]
+        //[WebInvoke(Method = "PUT", ResponseFormat = WebMessageFormat.Json,
+        //    UriTemplate = "customerEDIT/")]
+        //void UpdateCustomer(Customer editC, int id);
 
-        [OperationContract]
-        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "customerInsert/")]
-        void InsertCustomer(Customer insertC, int id);
+        //[OperationContract]
+        //[WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json,
+        //    UriTemplate = "customerInsert/")]
+        //void InsertCustomer(Customer insertC, int id);
 
 
 
