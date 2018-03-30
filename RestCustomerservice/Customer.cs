@@ -30,6 +30,11 @@ namespace RestCustomerservice
 
         public int GetYear { get => _Year; set => _Year = value; }
 
+        public string FullInfo
+        {
+            get => $"{_FirstName} {_LastName} ({_Year})";
+        }
+
 
     }
 }
