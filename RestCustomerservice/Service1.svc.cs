@@ -14,8 +14,10 @@ namespace RestCustomerservice
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class Service1 : IService1
     {
+        private string nycpn =
+            "Data Source=3semesterxxx.database.windows.net;Initial Catalog=WCFSTUDENT;Integrated Security=False;User ID=admeme;Password=Skole123;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private string _Connstr =
-            "Server=tcp:fridai.database.windows.net,1433;Initial Catalog=TestDB;Persist Security Info=False;User ID={fridai};Password={Skole123};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            "Server=tcp:fridai.database.windows.net,1433;Initial Catalog=TestDB;Persist Security Info=False;User ID={fridai@fridai.database.windows.net};Password={Skole123};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         private static List<Customer> cList = new List<Customer>()
         {
             new Customer(1, "asd", "asd", 123),
@@ -44,28 +46,24 @@ namespace RestCustomerservice
             // }
             var customer = new Customer();
 
-            using (SqlConnection connection = new SqlConnection(_Connstr))
+            using (SqlConnection connection = new SqlConnection(nycpn))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand($"SELECT * FROM Person WHERE ID = {id}");
+                SqlCommand command = new SqlCommand("SELECT * FROM Person WHERE ID = @id", connection);
+                command.Parameters.AddWithValue("@id", id);
 
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlDataReader reader1 = command.ExecuteReader())
                 {
-                    int custordinalID = reader.GetOrdinal("ID");
-                    int custName = reader.GetOrdinal("Name");
-                    int custLName = reader.GetOrdinal("LastName");
-                    int CustYear = reader.GetOrdinal("Year");
-                    while (reader.Read())
+                    while (reader1.Read())
                     {
-                        
-                        customer.GetiD = reader.GetInt32(custordinalID);
-                        customer.GetFirstName = reader.GetString(custLName);
-                        customer.GetLastName = reader.GetString(custLName);
-                        customer.GetYear = reader.GetInt32(CustYear);
+                        customer.GetFirstName = reader1["firstname"].ToString();
+                        customer.GetLastName = reader1["lastname"].ToString();
+                        customer.GetYear = Int32.Parse(reader1["year"].ToString());
+                        customer.GetiD = Int32.Parse(reader1["id"].ToString());
                     }
-                   
-                    
                 }
+
+              
                 connection.Close();
             }
 
@@ -106,7 +104,29 @@ namespace RestCustomerservice
 
         public string InsertCustomer(Customer insertC, int id)
         {
-            cList.Add(new Customer(id,insertC.GetFirstName, insertC.GetLastName, insertC.GetYear));
+            var customer = new Customer();
+            string quary = "INSERT into dbo.person (id, firstname, lastname, year) VALUES(";
+
+            using (SqlConnection connection = new SqlConnection(nycpn))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("SELECT * FROM Person WHERE ID = @id", connection);
+                command.Parameters.AddWithValue("@id", id);
+
+                using (SqlDataReader reader1 = command.ExecuteReader())
+                {
+                    while (reader1.Read())
+                    {
+                        customer.GetFirstName = reader1["firstname"].ToString();
+                        customer.GetLastName = reader1["lastname"].ToString();
+                        customer.GetYear = Int32.Parse(reader1["year"].ToString());
+                        customer.GetiD = Int32.Parse(reader1["id"].ToString());
+                    }
+                }
+
+
+                connection.Close();
+            }
             return $"tilføjet bruger med id {id}";
         }
 
